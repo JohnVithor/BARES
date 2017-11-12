@@ -6,7 +6,7 @@
  *
  * @author     João Vítor Venceslau Coelho / Selan Rodrigues dos Santos
  * @since      28/10/2017
- * @date       11/11/2017
+ * @date       12/11/2017
  */
 
 #include <iostream>
@@ -22,12 +22,12 @@
  * @param[in]  result  O resultado da avaliação do Parser
  * @param[in]  str     A string com a expressão onde o erro foi encontrado
  */
-void print_parser_error( const Parser::ParserResult & result, std::string str )
+void print_parser_error( const Parser::ParserResult & result )
 {
 	switch ( result.type )
 	{
 		case Parser::ParserResult::UNEXPECTED_END_OF_EXPRESSION:
-			std::cout << "Unexpected end of input at column (" << result.at_col << ")!\n";
+			std::cout << "Unexpected end of input at column (" << result.at_col+1 << ")!\n";
 			break;
 		case Parser::ParserResult::ILL_FORMED_INTEGER:
 			std::cout << "Ill formed integer at column (" << result.at_col+1 << ")!\n";
@@ -42,7 +42,7 @@ void print_parser_error( const Parser::ParserResult & result, std::string str )
 			std::cout << "Integer constant out of range beginning at column (" << result.at_col+1 << ")!\n";
 			break;
 		case Parser::ParserResult::MISSING_CLOSING_PARENTHESIS:
-			std::cout << "Missing closing \")\" at column (" << result.at_col << ")!\n";
+			std::cout << "Missing closing \")\" at column (" << result.at_col+1 << ")!\n";
 			break;
 		default:
 			std::cout << ">>> Unhandled error found!\n";
@@ -85,7 +85,7 @@ int main(int argc, char const *argv[])
 	std::vector<std::string> expressions;
 	std::string aux;
 
-	while ( std::getline(std::cin, aux) and aux != "end" )
+	while ( std::getline(std::cin, aux) and aux != "q" and aux != "p")
 	{
 		expressions.push_back( aux );
 	}
@@ -99,7 +99,7 @@ int main(int argc, char const *argv[])
 
 		if ( result.type != Parser::ParserResult::PARSER_OK )
 		{
-			print_parser_error( result, expr );
+			print_parser_error( result );
 		}
 		else
 		{

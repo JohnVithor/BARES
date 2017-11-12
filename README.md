@@ -60,7 +60,9 @@ Para gerar a documentação digite 'make doxy' no terminal.
 A forma geral de execução do programa é
 
 	$./bin/bares
-Para digitar as expressões durante a execução do programa, ou
+Para digitar as expressões durante a execução do programa, ao final digite "q" ou "p" para mostrar o resultados
+
+ou
 		
 	$./bin/bares < arquivo_entrada > [arquivo_saida]
 

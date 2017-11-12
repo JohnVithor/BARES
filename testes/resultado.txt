@@ -13,7 +13,9 @@ Extraneous symbol after valid expression found at column (7)!
 Extraneous symbol after valid expression found at column (6)!
 Extraneous symbol after valid expression found at column (2)!
 Ill formed integer at column (1)!
-Missing closing ")" at column (10)!
+Missing closing ")" at column (13)!
+Unexpected end of input at column (4)!
+Unexpected end of input at column (5)!
 Division by zero!
 Division by zero!
 Numeric overflow error!
@@ -21,7 +23,7 @@ Numeric overflow error!
 40
 5
 16
--3
+Ill formed integer at column (1)!
 9
 Ill formed integer at column (1)!
 Ill formed integer at column (1)!
@@ -34,5 +36,5 @@ Ill formed integer at column (1)!
 27
 180
 -81
--5
+Ill formed integer at column (1)!
 17

@@ -12,7 +12,7 @@
  *             
  * @author     João Vítor Venceslau Coelho / Selan Rodrigues dos Santos
  * @since      28/10/2017
- * @date       11/11/2017
+ * @date       12/11/2017
  */
 
 #include "parser.hpp"
@@ -225,6 +225,8 @@ Parser::ParserResult Parser::term ()
  */
 Parser::ParserResult Parser::integer ()
 {
+	auto begin_token = it_curr_symb;
+
 	if ( accept( terminal_symbol_t::TS_ZERO ) )
 	{
 		token_list.emplace_back( Token( "0", Token::token_t::OPERAND ) );
@@ -232,12 +234,12 @@ Parser::ParserResult Parser::integer ()
 	}
 
 	auto cont = 0;
-	while ( expect( terminal_symbol_t::TS_MINUS ) )
+	while ( accept( terminal_symbol_t::TS_MINUS ) )
 	{
 		++cont;
 	}
 
-	auto begin_token = it_curr_symb;
+	auto begin_number = it_curr_symb;
 	auto result = natural_number();
 	
 	if ( result.type == ParserResult::PARSER_OK )
@@ -245,12 +247,11 @@ Parser::ParserResult Parser::integer ()
 		result.at_col = cont;
 
 		std::string token_str;
-		std::copy( begin_token, it_curr_symb, std::back_inserter( token_str ) );
+		std::copy( begin_number, it_curr_symb, std::back_inserter( token_str ) );
 
 		if ( cont % 2 == 1 )
 		{
 			token_str = "-" + token_str;
-			--cont;
 		}
 
 		input_int_type token_int;
@@ -268,6 +269,16 @@ Parser::ParserResult Parser::integer ()
 		}
 
 		token_list.emplace_back( Token( token_str, Token::token_t::OPERAND ) );
+	}
+	else if ( !end_input() )
+	{
+		return ParserResult( ParserResult::code_t::ILL_FORMED_INTEGER
+		, std::distance( expr.begin(), begin_token ) );
+	}
+	else
+	{
+		return ParserResult( ParserResult::code_t::UNEXPECTED_END_OF_EXPRESSION
+			, std::distance( expr.begin(), it_curr_symb ) );
 	}
 
 	return result;

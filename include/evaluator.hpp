@@ -82,56 +82,56 @@ class Evaluator
 		/**
 		 * @brief      Determina se o token avalizado é um operando
 		 *
-		 * @param[in]  c     Token a ser avaliado
+		 * @param[in]  tok     Token a ser avaliado
 		 *
 		 * @return     True se for operando, False caso contrário.
 		 */
-		bool is_operand ( Token c );
+		bool is_operand ( Token tok );
 
 		/**
 		 * @brief      Determina se o token avalizado é um operador
 		 *
-		 * @param[in]  c     Token a ser avaliado
+		 * @param[in]  tok     Token a ser avaliado
 		 *
 		 * @return     True se for operador, False caso contrário.
 		 */
-		bool is_operator ( Token c );
+		bool is_operator ( Token tok );
 
 		/**
 		 * @brief      Determina se o token avalizado é um "("
 		 *
-		 * @param[in]  c     Token a ser avaliado
+		 * @param[in]  tok     Token a ser avaliado
 		 *
 		 * @return     True se for "(", False caso contrário.
 		 */
-		bool is_opening_scope ( Token c );
+		bool is_opening_scope ( Token tok );
 
 		/**
 		 * @brief      Determina se o token avalizado é um ")"
 		 *
-		 * @param[in]  c     Token a ser avaliado
+		 * @param[in]  tok     Token a ser avaliado
 		 *
 		 * @return     True se for ")", False caso contrário.
 		 */
-		bool is_closing_scope ( Token c );
+		bool is_closing_scope ( Token tok );
 
 		/**
 		 * @brief      Determina se o token avalizado é um "^"
 		 *
-		 * @param[in]  c     Token a ser avaliado
+		 * @param[in]  tok     Token a ser avaliado
 		 *
 		 * @return     True se for "^", False caso contrário.
 		 */
-		bool is_right_association ( Token c );
+		bool is_right_association ( Token tok );
 
 		/**
 		 * @brief      Determina qual a prioridade desse token ( operador )
 		 *
-		 * @param[in]  c     Token a ser avaliado
+		 * @param[in]  c     Char a ser avaliado
 		 *
 		 * @return     A prioridade do token avaliado.
 		 */
-		short get_precedence ( Token c );
+		short get_precedence ( char c );
 
 		/**
 		 * @brief      Determina qual dos dois tokens possui maior prioridade
@@ -154,7 +154,7 @@ class Evaluator
 		 * @return     Retorna um EvaluatorResult, com o valor da operação e
 		 *             caso tenha ocorrido um erro qual foi.
 		 */
-		Evaluator::EvaluatorResult execute_operator ( value_type term1, value_type term2, Token op );
+		Evaluator::EvaluatorResult execute_operator ( value_type term1, value_type term2, char op );
 
 
 	public:

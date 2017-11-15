@@ -37,73 +37,73 @@ value_type Evaluator::Token2Value ( Token tok )
 /**
  * @brief      Determina se o token avalizado é um operando
  *
- * @param[in]  c     Token a ser avaliado
+ * @param[in]  tok     Token a ser avaliado
  *
  * @return     True se for operando, False caso contrário.
  */
-bool Evaluator::is_operand ( Token c )
+bool Evaluator::is_operand ( Token tok )
 {
-	return c.type == Token::token_t::OPERAND;
+	return tok.type == Token::token_t::OPERAND;
 }
 
 /**
  * @brief      Determina se o token avalizado é um operador
  *
- * @param[in]  c     Token a ser avaliado
+ * @param[in]  tok     Token a ser avaliado
  *
  * @return     True se for operador, False caso contrário.
  */
-bool Evaluator::is_operator ( Token c )
+bool Evaluator::is_operator ( Token tok )
 {
-	return c.type == Token::token_t::OPERATOR;
+	return tok.type == Token::token_t::OPERATOR;
 }
 
 /**
  * @brief      Determina se o token avalizado é um "("
  *
- * @param[in]  c     Token a ser avaliado
+ * @param[in]  tok     Token a ser avaliado
  *
  * @return     True se for "(", False caso contrário.
  */
-bool Evaluator::is_opening_scope ( Token c )
+bool Evaluator::is_opening_scope ( Token tok )
 {
-	return c.type == Token::token_t::OPENING_SCOPE;
+	return tok.type == Token::token_t::OPENING_SCOPE;
 }
 
 /**
  * @brief      Determina se o token avalizado é um ")"
  *
- * @param[in]  c     Token a ser avaliado
+ * @param[in]  tok     Token a ser avaliado
  *
  * @return     True se for ")", False caso contrário.
  */
-bool Evaluator::is_closing_scope ( Token c )
+bool Evaluator::is_closing_scope ( Token tok )
 {
-	return c.type == Token::token_t::CLOSING_SCOPE;
+	return tok.type == Token::token_t::CLOSING_SCOPE;
 }
 
 /**
  * @brief      Determina se o token avalizado é um "^"
  *
- * @param[in]  c     Token a ser avaliado
+ * @param[in]  tok     Token a ser avaliado
  *
  * @return     True se for "^", False caso contrário.
  */
-bool Evaluator::is_right_association ( Token c )
+bool Evaluator::is_right_association ( Token tok )
 {
-	return c.value[0] == '^';
+	return tok.value == "^";
 }
 
 /**
  * @brief      Determina qual a prioridade desse token ( operador )
  *
- * @param[in]  c     Token a ser avaliado
+ * @param[in]  c     Char a ser avaliado
  *
  * @return     A prioridade do token avaliado.
  */
-short Evaluator::get_precedence ( Token c )
+short Evaluator::get_precedence ( char c )
 {
-	switch( c.value[0] )
+	switch( c )
 	{
 		case '^': return 3;
 		// ==================================================
@@ -128,8 +128,8 @@ short Evaluator::get_precedence ( Token c )
  */
 bool Evaluator::has_higher_precedence ( Token op1, Token op2 )
 {
-	short w1 = get_precedence( op1 );
-	short w2 = get_precedence( op2 );
+	short w1 = get_precedence( op1.value[0] );
+	short w2 = get_precedence( op2.value[0] );
 
 	if ( w1 == w2 and is_right_association( op1 ) )
 	{
@@ -150,14 +150,14 @@ bool Evaluator::has_higher_precedence ( Token op1, Token op2 )
  * @return     Retorna um EvaluatorResult, com o valor da operação e caso tenha
  *             ocorrido um erro qual foi.
  */
-Evaluator::EvaluatorResult Evaluator::execute_operator ( value_type term1, value_type term2, Token op )
+Evaluator::EvaluatorResult Evaluator::execute_operator ( value_type term1, value_type term2, char op )
 {
 	Evaluator::EvaluatorResult result;
 	result.value = 0;
 
 	value_type result_aux;
 
-	switch ( op.value[0] )
+	switch ( op )
 	{
 		case '+' : result_aux = term1 + term2;
 			break;
@@ -244,10 +244,6 @@ std::vector< Token > Evaluator::infix_to_postfix ( std::vector< Token > infix_ )
 			
 			st.push( s );
 		}
-		else
-		{
-			assert(false);
-		}
 	}
 
 	while( not st.empty() )
@@ -283,13 +279,9 @@ Evaluator::EvaluatorResult Evaluator::evaluate_postfix ( std::vector< Token > po
 			auto term2 = st.top(); st.pop();
 			auto term1 = st.top(); st.pop();
 
-			result = execute_operator( term1, term2, s );
+			result = execute_operator( term1, term2, s.value[0] );
 
 			st.push( result.value );
-		}
-		else
-		{
-			assert(false);
 		}
 	}
 	result.value = st.top();

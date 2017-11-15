@@ -18,13 +18,12 @@
 #ifndef _PARSER_H_
 #define _PARSER_H_
 
-#include <iostream> 	// std::cout, std::cin
-#include <iterator> 	// std::distance()
-#include <vector>   	// std::vector
 #include <sstream>  	// std::istringstream
+#include <iterator> 	// std::distance()
 #include <cstddef>  	// std::ptrdiff_t
 #include <limits>   	// std::numeric_limits
 #include <algorithm>	// std::copy
+#include <vector>   	// std::vector
 
 #include "token.hpp"  	// struct Token.
 

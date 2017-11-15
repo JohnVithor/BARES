@@ -1,6 +1,6 @@
 /**
  * @file parser.cpp
- * @brief      Implementação do métodos da classe Parser
+ * @brief      Implementação do métodos da classe Parser.
  * @details    Implementa um analisador descendente recursivo para uma gramática EBNF
  * 
  *             <expr>            := <term>,{ ("+"|"-"),<term> };
@@ -12,12 +12,54 @@
  *             
  * @author     João Vítor Venceslau Coelho / Selan Rodrigues dos Santos
  * @since      28/10/2017
- * @date       12/11/2017
+ * @date       15/11/2017
  */
 
 #include "parser.hpp"
-#include <iterator>
-#include <algorithm>
+
+/**
+ * @brief      Função que tokeniza um string
+ *
+ * @param[in]  e_    String a ser tokenizada
+ *
+ * @return     O código com o resultado da tokenização
+ */
+Parser::ParserResult Parser::parse ( std::string e_ )
+{
+	expr = e_;
+	it_curr_symb = expr.begin();
+	token_list.clear();
+
+	skip_ws();
+	if ( end_input() )
+	{
+		return ParserResult( ParserResult::code_t::UNEXPECTED_END_OF_EXPRESSION
+			, std::distance( expr.begin(), it_curr_symb ) );
+	}
+
+	auto result = expression();
+
+	if ( result.type == ParserResult::code_t::PARSER_OK )
+	{
+
+		skip_ws();
+		if ( not end_input() )
+		{
+			return ParserResult( ParserResult::code_t::EXTRANEOUS_SYMBOL, std::distance( expr.begin(), it_curr_symb ) );
+		}
+	}
+	return result;
+}
+
+/**
+ * @brief      Recupera o vector com os tokens da string
+ *             
+ * @return     Vector com os tokens
+ */
+std::vector< Token > Parser::get_tokens ( void ) const
+{
+	return token_list;
+}
 
 /**
  * @brief      Categoriza o símbolo ( char ) informado
@@ -61,16 +103,6 @@ Parser::terminal_symbol_t Parser::lexer ( char c_ ) const
 void Parser::next_symbol ( void )
 {
 	std::advance( it_curr_symb, 1 );
-}
-
-/**
- * @brief      Verifica se a string acabou
- *
- * @return     True se é o fim da string, False caso contrário
- */
-bool Parser::end_input ( void ) const
-{
-	return it_curr_symb == expr.end();
 }
 
 /**
@@ -127,6 +159,16 @@ void Parser::skip_ws ( void )
 	{
 		next_symbol();
 	}
+}
+
+/**
+ * @brief      Verifica se a string acabou
+ *
+ * @return     True se é o fim da string, False caso contrário
+ */
+bool Parser::end_input ( void ) const
+{
+	return it_curr_symb == expr.end();
 }
 
 /**
@@ -322,49 +364,9 @@ bool Parser::digit ()
 	return ( accept( terminal_symbol_t::TS_ZERO ) or digit_excl_zero() );
 }
 
-/**
- * @brief      Função que tokeniza um string
- *
- * @param[in]  e_    String a ser tokenizada
- *
- * @return     O código com o resultado da tokenização
- */
-Parser::ParserResult Parser::parse ( std::string e_ )
-{
-	expr = e_;
-	it_curr_symb = expr.begin();
-	token_list.clear();
 
-	skip_ws();
-	if ( end_input() )
-	{
-		return ParserResult( ParserResult::code_t::UNEXPECTED_END_OF_EXPRESSION
-			, std::distance( expr.begin(), it_curr_symb ) );
-	}
 
-	auto result = expression();
 
-	if ( result.type == ParserResult::code_t::PARSER_OK )
-	{
-
-		skip_ws();
-		if ( not end_input() )
-		{
-			return ParserResult( ParserResult::code_t::EXTRANEOUS_SYMBOL, std::distance( expr.begin(), it_curr_symb ) );
-		}
-	}
-	return result;
-}
-
-/**
- * @brief      Recupera o vector com os tokens da string
- *             
- * @return     Vector com os tokens
- */
-std::vector< Token > Parser::get_tokens ( void ) const
-{
-	return token_list;
-}
 
 
 

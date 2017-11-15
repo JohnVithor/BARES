@@ -1,28 +1,27 @@
 /**
  * @file evaluator.hpp
- * @brief      Declaração do métodos e atributos da classe Evaluator
- * @details    Converte uma expressão aritmética em notação infixa para posfixa.
- *             Depois que a conversão for feita, o programa avalia a expressão
+ * @brief      Declaração dos métodos e atributos da classe Evaluator.
+ * @details    Converte uma expressão aritmética em notação infixa para posfixa e
+ *             depois que a conversão for feita, o programa avalia a expressão
  *             utilizando stacks. Apenas os operadores '+', '-', '*', '%', '/',
  *             e '^' ( para exponenciação ) são aceitos.
  *
  * @author     João Vítor Venceslau Coelho / Selan Rodrigues dos Santos
  * @since      28/10/2017
- * @date       11/11/2017
+ * @date       15/11/2017
  */
 
 #ifndef _EVALUATOR_H_
 #define _EVALUATOR_H_
 
-#include <iostream>  	// std::cout, std::endl
 #include <string>    	// std::string
 #include <cassert>   	// std::assert
 #include <cmath>     	// std::pow
 #include <stdexcept>	// std::runtime_error
-#include <vector>		// std::vector
 #include <limits> 		// std::numeric_limits
+#include <vector>		// std::vector
 
-#include "token.hpp"	// struct Token.
+#include "token.hpp"	// Token
 #include "stack.hpp"  	// jv::stack
 
 /**
@@ -70,6 +69,15 @@ class Evaluator
 	private:
 		
 		std::vector< Token > expression;
+
+		/**
+		 * @brief      Converte o valor de um token em um valor numérico
+		 *
+		 * @param[in]  tok   O token a ser convertido
+		 *
+		 * @return     O valor convertido
+		 */
+		value_type Token2Value ( Token tok );
 
 		/**
 		 * @brief      Determina se o token avalizado é um operando
@@ -147,15 +155,6 @@ class Evaluator
 		 *             caso tenha ocorrido um erro qual foi.
 		 */
 		Evaluator::EvaluatorResult execute_operator ( value_type term1, value_type term2, Token op );
-
-		/**
-		 * @brief      Converte o valor de um token em um valor numérico
-		 *
-		 * @param[in]  tok   O token a ser convertido
-		 *
-		 * @return     O valor convertido
-		 */
-		value_type Token2Value ( Token tok );
 
 
 	public:
